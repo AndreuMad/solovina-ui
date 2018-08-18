@@ -1,0 +1,24 @@
+{
+  "presets": [
+    ["es2015", {"modules": false}],
+    [
+      "env", {
+      "targets": {
+        "browsers": [
+          "last 2 versions",
+          "safari >= 7"
+        ]
+      }
+    }
+    ],
+    "react",
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-react-jsx",
+    "transform-runtime",
+    "react-html-attrs",
+    "react-hot-loader/babel",
+    "transform-decorators-legacy"
+  ]
+}

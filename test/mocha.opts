@@ -1,0 +1,4 @@
+--env test
+--require test/compiler.js test/setup.js
+test/index.js
+src/**/*.spec.js
