@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import IntlProvider from './i18n/IntlProvider';
+// setting a key={locale} to force React to re-render everything under it;
 import store from './utils/store';
 import theme from './modules/shared/styles/theme';
 
@@ -14,11 +14,9 @@ import './styles';
 export default function App() {
   return (
     <Provider store={store} key="provider">
-      <IntlProvider>
-        <ThemeProvider theme={theme}>
-          <Routes/>
-        </ThemeProvider>
-      </IntlProvider>
+      <ThemeProvider theme={theme}>
+        <Routes />
+      </ThemeProvider>
     </Provider>
   );
 }

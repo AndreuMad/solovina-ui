@@ -1,13 +1,17 @@
 import { injectGlobal } from 'styled-components';
 
-import fontAwesomeStyles from 'font-awesome/scss/font-awesome.scss';
+// Libs
+import './libs/fontAwesome';
+
+// Base
 import fontStyles from './fonts';
 import resetStyles from './reset';
 import baseStyles from './base';
+import gridStyles from './grid';
 
 injectGlobal`
   ${resetStyles};
-  ${fontAwesomeStyles};
   ${fontStyles};
   ${baseStyles};
+  ${gridStyles};
 `;

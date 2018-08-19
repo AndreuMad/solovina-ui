@@ -31,7 +31,7 @@ module.exports = [
   }),
 
   // Excludes unnecessary locales from moment.js library
-  new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl|fr|ca/),
+  new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /uk|en/),
 
   /*
    *   DEVELOPMENT PLUGINS START
