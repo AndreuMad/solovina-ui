@@ -3,39 +3,40 @@ import { NavLink } from 'react-router-dom';
 
 export const ContentBlock = styled.div`
   display: flex;
-  height: ${props => props.theme.headerHeight.xs.normal};
+  height: ${props => props.headerIsSticky ? props.theme.headerHeight.xs.sticky : props.theme.headerHeight.xs.normal};
   align-items: center;
   transition: height .15s ease-out;
-
+  
   @media(min-width: ${props => props.theme.screenBreakpoints.lg}) {
-    height: ${props => props.theme.headerHeight.lg.normal};
+    height: ${props => props.headerIsSticky ? props.theme.headerHeight.lg.sticky : props.theme.headerHeight.lg.normal};
   }
 `;
 
 export const MainLogoStyled = styled.figure`
-  width: 48px;
+  width: ${props => props.headerIsSticky ? '36px' : '48px'};
   transition: width .15s ease-out;
-  
+
   @media(min-width: ${props => props.theme.screenBreakpoints.lg}) {
-    width: 88px;
+    width: ${props => props.headerIsSticky ? '52px' : '88px'};
   }
 `;
 
 export const MainNavStyled = styled.nav`
   position: fixed;
-  top: ${props => props.theme.headerHeight.xs.normal};
+  top: ${props => props.headerIsSticky ? props.theme.headerHeight.xs.sticky : props.theme.headerHeight.xs.normal};
   left: 0;
   right: 0;
   padding: 0 24px;
-  opacity: 0;
   background-color: rgba(255, 255, 255, .75);
-  pointer-events: none;
   transition: opacity .15s ease-out;
 
-  &.is-active {
+  ${props => props.isActive ? `
     opacity: 1;
     pointer-events: auto;
-  }
+  ` : `
+    opacity: 0;
+    pointer-events: none;
+  `};
 
   @media(min-width: ${props => props.theme.screenBreakpoints.lg}) {
     position: static;
@@ -54,37 +55,9 @@ export const HeaderStyled = styled.header`
   right: 0;
   background-color: #fff;
 
-  &.sticky {
+  ${props => props.headerIsSticky && `
     box-shadow: 0 1px 10px rgba(0, 0, 0, .1);
-
-    ${ContentBlock} {
-      height: ${props => props.theme.headerHeight.xs.sticky};
-    };
-
-    ${MainLogoStyled} {
-      width: 36px;
-    }
-
-    ${MainNavStyled} {
-      top: ${props => props.theme.headerHeight.xs.sticky};
-    }
-  }
-
-  @media(min-width: ${props => props.theme.screenBreakpoints.lg}) {
-    ${ContentBlock} {
-      height: ${props => props.theme.headerHeight.lg.normal};
-    };
-
-    &.sticky {
-      ${ContentBlock} {
-        height: ${props => props.theme.headerHeight.lg.sticky};
-      };
-
-      ${MainLogoStyled} {
-        width: 52px;
-      }
-    }
-  }
+  `};
 `;
 
 export const NavLinkStyled = styled(NavLink)`
@@ -183,27 +156,25 @@ export const HamburgerStyled = styled.div`
     }
   `}
 
-  &.is-active {
-    ${props => props.type === 'squeeze' && `
-      .hamburger-inner {
-        transform: rotate(45deg);
-        transition-delay: .12s;
-        transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  
-        &::before {
-          top: 0;
-          opacity: 0;
-          transition: top .075s ease,
-                      opacity .075s .12s ease;
-        }
-  
-        &::after {
-          bottom: 0;
-          transform: rotate(-90deg);
-          transition: bottom .075s ease,
-                      transform .075s .12s cubic-bezier(.215, .61, .355, 1);
-        }
+  ${props => props.isActive && props.type === 'squeeze' && `
+    .hamburger-inner {
+      transform: rotate(45deg);
+      transition-delay: .12s;
+      transition-timing-function: cubic-bezier(.215, .61, .355, 1);
+
+      &::before {
+        top: 0;
+        opacity: 0;
+        transition: top .075s ease,
+                    opacity .075s .12s ease;
       }
-    `}
-  }
+
+      &::after {
+        bottom: 0;
+        transform: rotate(-90deg);
+        transition: bottom .075s ease,
+                    transform .075s .12s cubic-bezier(.215, .61, .355, 1);
+      }
+    }
+  `};
 `;

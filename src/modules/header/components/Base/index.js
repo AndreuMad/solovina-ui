@@ -17,11 +17,10 @@ class Header extends Component {
   constructor(props) {
     super(props);
 
-    this.headerNode = React.createRef();
-    this.navigationNode = React.createRef();
-    this.hamburgerNode = React.createRef();
-
-    this.menuOpened = false;
+    this.state = {
+      headerIsSticky: false,
+      menuOpened    : false
+    };
 
     this.handleScroll = debounce(this.handleScroll.bind(this), 150);
     this.handleNavigation = this.handleNavigation.bind(this);
@@ -32,51 +31,44 @@ class Header extends Component {
   }
 
   handleScroll() {
-    const $headerNode = this.headerNode.current;
-    const isSticky = $headerNode.classList.contains('sticky');
+    const isSticky = this.state.headerIsSticky;
     const shouldBeSticky = !!window.pageYOffset;
 
     if (!isSticky && shouldBeSticky) {
-      $headerNode.classList.add('sticky');
+      this.setState({ headerIsSticky: true });
     } else if (isSticky && !shouldBeSticky) {
-      $headerNode.classList.remove('sticky');
+      this.setState({ headerIsSticky: false });
     }
   }
 
   handleNavigation() {
-    const $navigationNode = this.navigationNode.current;
-    const $hamburgerNode = this.hamburgerNode.current;
-
-    if (this.menuOpened) {
-      this.menuOpened = false;
-
-      $navigationNode.classList.remove('is-active');
-      $hamburgerNode.classList.remove('is-active');
-    } else {
-      this.menuOpened = true;
-
-      $navigationNode.classList.add('is-active');
-      $hamburgerNode.classList.add('is-active');
-    }
+    this.setState({
+      menuOpened: !this.state.menuOpened
+    });
   }
 
   render() {
+    const {
+      headerIsSticky,
+      menuOpened
+    } = this.state;
+
     return (
-      <HeaderStyled innerRef={this.headerNode}>
+      <HeaderStyled headerIsSticky={headerIsSticky}>
         <div className="container">
           <div className="row">
             <div className="col-3 col-md-2 d-flex align-items-center">
-              <ContentBlock>
+              <ContentBlock headerIsSticky={headerIsSticky}>
                 <NavLink to="/main">
-                  <MainLogoStyled>
+                  <MainLogoStyled headerIsSticky={headerIsSticky}>
                     <img src={mainLogo} alt="Мова" title="Мова" />
                   </MainLogoStyled>
                 </NavLink>
               </ContentBlock>
             </div>
             <div className="col-9 col-md-10 d-flex align-items-center justify-content-end">
-              <ContentBlock>
-                <MainNavStyled innerRef={this.navigationNode}>
+              <ContentBlock headerIsSticky={headerIsSticky}>
+                <MainNavStyled isActive={menuOpened} headerIsSticky={headerIsSticky}>
                   <NavLinkStyled
                     to="/main"
                     activeClassName="active"
@@ -110,8 +102,8 @@ class Header extends Component {
                 </MainNavStyled>
                 <SearchField />
                 <HamburgerStyled
-                  innerRef={this.hamburgerNode}
                   type="squeeze"
+                  isActive={menuOpened}
                   hamburgerPaddingY={6}
                   hamburgerPaddingX={6}
                   hamburgerLayerWidth={24}
